@@ -165,12 +165,15 @@ if($user){
 				$alertForm = "has-error";
 			} else {
 				// Check Referral
-				if($_COOKIE['refer']){
-					if(is_numeric($_COOKIE['refer'])){
-						$referID2 = $mysqli->real_escape_string($_COOKIE['refer']);
-						$AddressCheck = $mysqli->query("SELECT COUNT(id) FROM faucet_user_list WHERE id = '$referID2'")->fetch_row()[0];
-						if($AddressCheck == 1){
-							$referID = $referID2;
+				if(!$_COOKIE['r'] != ""){
+				        $btcAddyRef = $mysqli->real_escape_string($_GET['r']);
+				        $IDaddy = $mysqli->query("SELECT id FROM faucet_user_list WHERE address = '$btcAddyRef'");
+				if($IDaddy->num_rows == 1){
+			        	$IDaddy = $IDaddy->fetch_assoc();
+			         	setcookie("refer", $IDaddy['id'],time()+(3600*24));
+			                	}
+			        	}
+			         }
 						} else {
 							$referID = 0;
 						}
